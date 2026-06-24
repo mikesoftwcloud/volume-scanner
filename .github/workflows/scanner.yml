@@ -1,0 +1,29 @@
+name: Volume Scanner
+
+on:
+  schedule:
+    - cron: '55 11 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - run: pip install -r requirements.txt
+      
+      - env:
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+        run: python volume_scanner.py
+      
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: scanner-logs
+          path: volume_scanner.log
+          retention-days: 30
