@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 # --- CONFIGURATION ---
 API_KEY = os.getenv("FINNHUB_API_KEY", "YOUR_FINNHUB_API_KEY")
-WATCHLIST = ["NOK", "LNOK", "AAPL", "TSLA", "NVDA", "AMD"]
+WATCHLIST = ["NOK", "LNOK"]
 RVOL_THRESHOLD = 1.5  # 50% above 20-day average
 SCAN_INTERVAL = 120   # 2 minutes
 MAX_RETRIES = 3
