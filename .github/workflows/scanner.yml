@@ -19,12 +19,13 @@ jobs:
       
       - env:
           FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
-        run: python volume_scanner.py
+        run: python volume_scanner.py > volume_scanner.log 2>&1 || true
       
-      - uses: actions/upload-artifact@v4
-
-        if: always()
-        with:
-          name: scanner-logs
-          path: volume_scanner.log
-          retention-days: 30
+      - run: |
+          git config user.email "action@github.com"
+          git config user.name "GitHub Action"
+          mkdir -p logs
+          cp volume_scanner.log logs/scanner_$(date +%Y-%m-%d).log
+          git add logs/
+          git commit -m "Add scan logs for $(date +%Y-%m-%d)" || true
+          git push || true
